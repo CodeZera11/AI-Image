@@ -13,6 +13,9 @@ import axios from 'axios'
 import { ChatCompletionRequestMessage } from 'openai'
 import Loader from '@/components/Loader'
 import Empty from '@/components/Empty'
+import { cn } from '@/lib/utils'
+import UserAvatar from '@/components/UserAvatar'
+import BotAvatar from '@/components/BotAvatar'
 
 const ConversationPage = () => {
 
@@ -90,8 +93,12 @@ const ConversationPage = () => {
                     )}
 
                     {messages.map((message) => (
-                        <div key={message.content}>
-                            <p>{message.content}</p>
+                        <div
+                            key={message.content}
+                            className={cn('w-full p-8 flex items-start gap-x-8 rounded-lg', message.role === 'user' ? "bg-white border border-black" : "bg-muted")}
+                        >
+                            {message.role === 'user' ? <UserAvatar /> : <BotAvatar />}
+                            <p className='text-sm'>{message.content}</p>
                         </div>
                     ))}
                 </div>
