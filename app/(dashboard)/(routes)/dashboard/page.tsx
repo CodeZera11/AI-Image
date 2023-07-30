@@ -5,7 +5,6 @@ const DashboardPage = () => {
     return (
         <div>
             <div>DashboardPage (protected)</div>
-            <UserButton afterSignOutUrl='/' />
         </div>
     )
 }
