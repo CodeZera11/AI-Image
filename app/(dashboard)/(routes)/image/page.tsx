@@ -15,6 +15,7 @@ import Loader from '@/components/Loader'
 import Empty from '@/components/Empty'
 import { useRouter } from 'next/navigation'
 import { useProModal } from '@/hooks/useProModal'
+import toast from 'react-hot-toast'
 
 const ImagePage = () => {
 
@@ -47,9 +48,10 @@ const ImagePage = () => {
 
             form.reset();
         } catch (error: any) {
-            console.log(error)
             if (error?.response?.status === 403) {
                 proModal.onOpen()
+            } else {
+                toast.error("Something Went Wrong")
             }
             console.log(error)
         } finally {

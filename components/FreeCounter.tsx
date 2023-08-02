@@ -7,11 +7,16 @@ import { useProModal } from '@/hooks/useProModal'
 
 
 interface FreeCounterProps {
-    apiLimitCount: number
+    apiLimitCount: number;
+    isPro: boolean;
 }
-const FreeCounter = ({ apiLimitCount }: FreeCounterProps) => {
+const FreeCounter = ({ apiLimitCount, isPro }: FreeCounterProps) => {
 
-    const proModal = useProModal()
+    const proModal = useProModal();
+
+    if (isPro) {
+        return null;
+    }
 
     return (
         <div className='px-6'>
