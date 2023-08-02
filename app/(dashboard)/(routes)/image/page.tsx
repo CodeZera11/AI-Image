@@ -14,8 +14,11 @@ import axios from 'axios'
 import Loader from '@/components/Loader'
 import Empty from '@/components/Empty'
 import { useRouter } from 'next/navigation'
+import { useProModal } from '@/hooks/useProModal'
 
 const ImagePage = () => {
+
+    const proModal = useProModal();
 
     const router = useRouter()
     const [picture, setPicture] = useState<string>()
@@ -37,15 +40,17 @@ const ImagePage = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            console.log("starting to generate image")
+            setPicture("")
             const response = await axios.post("/api/image", values)
-
-            console.log(response)
 
             setPicture(response.data[0])
 
             form.reset();
-        } catch (error) {
+        } catch (error: any) {
+            console.log(error)
+            if (error?.response?.status === 403) {
+                proModal.onOpen()
+            }
             console.log(error)
         } finally {
             router.refresh();
@@ -58,8 +63,8 @@ const ImagePage = () => {
                 title='Image AI'
                 description='Convert your ideas into pictures'
                 icon={image}
-                iconColor='text-blue-500'
-                bgColor='bg-blue-500/10'
+                iconColor='text-emerald-500'
+                bgColor='bg-emerald-500/10'
             />
 
             <div className='px-4 lg:px-8'>

@@ -8,18 +8,11 @@ import React from 'react'
 
 const tools = [
     {
-        label: "Music Generation AI",
-        href: "/music",
-        icon: Music,
-        color: "text-green-500",
-        bgColor: "bg-green-500/10"
-    },
-    {
-        label: "Video Generation AI",
+        label: "Image Generation AI",
         href: "/image",
-        icon: Video,
-        color: "text-blue-500",
-        bgColor: "bg-blue-500/10"
+        icon: Image,
+        color: "text-emerald-500",
+        bgColor: "bg-emerald-500/10"
     },
 
 ]
@@ -32,7 +25,7 @@ const DashboardPage = () => {
         <div>
             <div className='mb-8 space-y-4'>
                 <h1 className='text-2xl md:text-4xl font-bold text-center'>Unleash The Power of AI</h1>
-                <p className='text-center text-sm md:text-lg text-muted-foreground font-light'>Convert your text into AI generated Images or just Chat with AI</p>
+                <p className='text-center text-sm md:text-lg text-muted-foreground font-light'>Convert your text into AI generated Images</p>
             </div>
             <div className='px-4 md:px-20 lg:px-32 space-y-4'>
                 {tools.map((tool) => (

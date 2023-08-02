@@ -1,3 +1,4 @@
+import { checkApiLimit, increaseApiLimit } from "@/lib/api_limit";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
@@ -22,6 +23,12 @@ export async function POST(request: Request) {
       );
     }
 
+    const freeTrial = await checkApiLimit();
+
+    if (!freeTrial) {
+      return new NextResponse("Free trial has expired!", { status: 403 });
+    }
+
     const output = await replicate.run(
       "stability-ai/stable-diffusion:ac732df83cea7fff18b8472768c88ad041fa750ff7682a21affe81863cbe77e4",
       {
@@ -31,7 +38,7 @@ export async function POST(request: Request) {
       }
     );
 
-    console.log(output);
+    await increaseApiLimit();
 
     return NextResponse.json(output, { status: 200 });
   } catch (error) {

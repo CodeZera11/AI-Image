@@ -5,6 +5,7 @@ import { ImageIcon, LayoutDashboardIcon, MessageSquare, Music, Settings, Video }
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation";
+import FreeCounter from "./FreeCounter"
 
 const routes = [
     {
@@ -14,16 +15,10 @@ const routes = [
         color: "text-sky-500",
     },
     {
-        label: "Music Generation",
-        icon: Music,
-        href: "/conversation",
-        color: "text-green-500",
-    },
-    {
         label: "Image Generation",
-        icon: Video,
+        icon: ImageIcon,
         href: "/image",
-        color: "text-blue-500",
+        color: "text-emerald-500",
     },
     {
         label: "Settings",
@@ -33,7 +28,10 @@ const routes = [
     },
 ]
 
-const Sidebar = () => {
+interface SidebarProps {
+    apiLimitCount: number
+}
+const Sidebar = ({ apiLimitCount }: SidebarProps) => {
 
     const pathname = usePathname()
 
@@ -54,6 +52,10 @@ const Sidebar = () => {
                         </div>
                     </Link>
                 ))}
+            </div>
+
+            <div>
+                <FreeCounter apiLimitCount={apiLimitCount} />
             </div>
         </div>
     )
