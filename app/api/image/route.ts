@@ -1,0 +1,43 @@
+import { auth } from "@clerk/nextjs";
+import { NextResponse } from "next/server";
+import Replicate from "replicate";
+
+const replicate = new Replicate({
+  auth: process.env.REPLICATE_API_TOKEN!,
+});
+
+export async function POST(request: Request) {
+  try {
+    const { userId } = auth();
+    const { prompt } = await request.json();
+
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
+    }
+
+    if (!prompt) {
+      return NextResponse.json(
+        { error: "Prompt is required" },
+        { status: 400 }
+      );
+    }
+
+    const output = await replicate.run(
+      "stability-ai/stable-diffusion:ac732df83cea7fff18b8472768c88ad041fa750ff7682a21affe81863cbe77e4",
+      {
+        input: {
+          prompt: prompt,
+        },
+      }
+    );
+
+    console.log(output);
+
+    return NextResponse.json(output, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}

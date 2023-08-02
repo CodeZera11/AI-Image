@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { ImageIcon, LayoutDashboardIcon, MessageSquare, Settings } from "lucide-react"
+import { ImageIcon, LayoutDashboardIcon, MessageSquare, Music, Settings, Video } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation";
@@ -14,14 +14,14 @@ const routes = [
         color: "text-sky-500",
     },
     {
-        label: "Conversation",
-        icon: MessageSquare,
+        label: "Music Generation",
+        icon: Music,
         href: "/conversation",
         color: "text-green-500",
     },
     {
         label: "Image Generation",
-        icon: ImageIcon,
+        icon: Video,
         href: "/image",
         color: "text-blue-500",
     },

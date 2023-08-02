@@ -1,7 +1,8 @@
 "use client"
 
 import Heading from '@/components/Heading'
-import { MessageSquare } from 'lucide-react'
+import { Image as image } from 'lucide-react'
+import Image from 'next/image'
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from 'react-hook-form'
@@ -10,16 +11,14 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import axios from 'axios'
-import { ChatCompletionRequestMessage } from 'openai'
 import Loader from '@/components/Loader'
 import Empty from '@/components/Empty'
-import { cn } from '@/lib/utils'
-import UserAvatar from '@/components/UserAvatar'
-import BotAvatar from '@/components/BotAvatar'
+import { useRouter } from 'next/navigation'
 
-const ConversationPage = () => {
+const ImagePage = () => {
 
-    const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+    const router = useRouter()
+    const [picture, setPicture] = useState<string>()
 
     const formSchema = z.object({
         prompt: z.string().min(1, {
@@ -38,27 +37,29 @@ const ConversationPage = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt }
-            const newMessages = [...messages, userMessage];
+            console.log("starting to generate image")
+            const response = await axios.post("/api/image", values)
 
-            const response = await axios.post("/api/conversation", { messages: newMessages });
+            console.log(response)
 
-            setMessages((current) => [...current, userMessage, response.data])
+            setPicture(response.data[0])
 
             form.reset();
         } catch (error) {
             console.log(error)
+        } finally {
+            router.refresh();
         }
     }
 
     return (
         <>
             <Heading
-                title='Conversation AI'
-                description='Ask anything you want and you will get all answers!'
-                icon={MessageSquare}
-                iconColor='text-green-500'
-                bgColor='bg-green-500/10'
+                title='Image AI'
+                description='Convert your ideas into pictures'
+                icon={image}
+                iconColor='text-blue-500'
+                bgColor='bg-blue-500/10'
             />
 
             <div className='px-4 lg:px-8'>
@@ -72,7 +73,7 @@ const ConversationPage = () => {
                                 render={({ field }) => (
                                     <FormItem className='col-span-12 lg:col-span-10'>
                                         <FormControl className='m-0 p-4'>
-                                            <Input placeholder="What is the radius of sun?" {...field} />
+                                            <Input placeholder="Astronaut sitting on a horse" {...field} />
                                         </FormControl>
                                     </FormItem>
                                 )}></FormField>
@@ -88,23 +89,19 @@ const ConversationPage = () => {
                         </div>
                     )}
 
-                    {messages.length === 0 && !isLoading && (
-                        <Empty label="No conversation started yet!" />
+                    {!picture && !isLoading && (
+                        <Empty label="No images generated yet!" />
                     )}
 
-                    {messages.map((message) => (
-                        <div
-                            key={message.content}
-                            className={cn('w-full p-8 flex items-start gap-x-8 rounded-lg', message.role === 'user' ? "bg-white border border-black" : "bg-muted")}
-                        >
-                            {message.role === 'user' ? <UserAvatar /> : <BotAvatar />}
-                            <p className='text-sm'>{message.content}</p>
+                    {picture && (
+                        <div className='flex items-center justify-center w-full mt-10'>
+                            <Image src={picture!} className='border-black border-2' alt='failed to generate image' width={400} height={300} />
                         </div>
-                    ))}
+                    )}
                 </div>
             </div>
         </>
     )
 }
 
-export default ConversationPage
+export default ImagePage

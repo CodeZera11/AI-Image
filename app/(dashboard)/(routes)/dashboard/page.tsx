@@ -2,22 +2,22 @@
 
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils';
-import { ArrowRight, Image, MessageSquare } from 'lucide-react'
+import { ArrowRight, Image, MessageSquare, Music, Video } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const tools = [
     {
-        label: "Conversation AI",
-        href: "/conversation",
-        icon: MessageSquare,
+        label: "Music Generation AI",
+        href: "/music",
+        icon: Music,
         color: "text-green-500",
         bgColor: "bg-green-500/10"
     },
     {
-        label: "Image Generation AI",
+        label: "Video Generation AI",
         href: "/image",
-        icon: Image,
+        icon: Video,
         color: "text-blue-500",
         bgColor: "bg-blue-500/10"
     },
