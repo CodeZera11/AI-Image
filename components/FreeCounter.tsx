@@ -5,6 +5,7 @@ import { Progress } from './ui/progress'
 import { Button } from './ui/button'
 import { useProModal } from '@/hooks/useProModal'
 
+
 interface FreeCounterProps {
     apiLimitCount: number
 }

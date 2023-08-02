@@ -1,12 +1,14 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog'
 import { useProModal } from '@/hooks/useProModal'
 import { Card } from './ui/card'
 import { Check, Image } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 const tools = [
     {
@@ -19,7 +21,21 @@ const tools = [
 
 export const ProModal = () => {
 
-    const proModal = useProModal()
+    const proModal = useProModal();
+    const router = useRouter();
+    const [loading, setLoading] = useState(false)
+
+    const handleUpgrade = async () => {
+        try {
+            setLoading(true)
+            const response = await axios.get("/api/stripe");
+            router.push(response.data.url)
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return (
         <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
@@ -44,7 +60,7 @@ export const ProModal = () => {
                             </Card>
                         ))}
                     </DialogDescription>
-                    <Button>Upgrade</Button>
+                    <Button disabled={loading} onClick={handleUpgrade}>{loading ? "Redirecting..." : "Upgrade"}</Button>
                 </DialogHeader>
             </DialogContent>
         </Dialog>
