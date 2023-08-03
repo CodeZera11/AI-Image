@@ -23,7 +23,7 @@ const LandingNavbar = () => {
                         <Link href={"/dashboard"}>
                             <Button variant={"ghost"} className='bg-zinc-900 text-sm md:text-md'>Get Started</Button>
                         </Link>
-                        <UserButton />
+                        <UserButton afterSignOutUrl="/" />
                     </div>
                 ) : (
                     <div className='flex gap-3'>

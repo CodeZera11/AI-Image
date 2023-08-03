@@ -2,7 +2,7 @@
 
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils';
-import { ArrowRight, Image, MessageSquare, Music, Video } from 'lucide-react'
+import { ArrowRight, Image } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
@@ -50,5 +50,3 @@ const DashboardPage = () => {
         </div>
     )
 }
-
-export default DashboardPage
