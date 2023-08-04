@@ -36,10 +36,6 @@ export async function POST(request: Request) {
       {
         input: {
           prompt: prompt,
-          num_outputs: 4,
-          width: 1024,
-          height: 1024,
-          refine: "expert_ensemble_refiner",
         },
       }
     );

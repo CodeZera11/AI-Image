@@ -22,7 +22,7 @@ const ImagePage = () => {
     const proModal = useProModal();
 
     const router = useRouter()
-    const [picture, setPicture] = useState<string[]>([])
+    const [picture, setPicture] = useState<string>()
 
     const formSchema = z.object({
         prompt: z.string().min(1, {
@@ -41,10 +41,10 @@ const ImagePage = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            setPicture([])
+            setPicture("")
             const response = await axios.post("/api/image", values)
 
-            setPicture(response.data)
+            setPicture(response.data[0])
             form.reset();
         } catch (error: any) {
             if (error?.response?.status === 403) {
@@ -99,12 +99,10 @@ const ImagePage = () => {
                     )}
 
                     <div className='grid md:grid-cols-4 mx-auto gap-5'>
-                        {picture?.length > 0 ? picture!.map((photo, i) => (
-                            <div key={i} className=' mt-10'>
-                                <Image src={photo} className='border-black border-2' alt='failed to generate image' width={300} height={300} />
+                        {picture && (
+                            <div className=' mt-10'>
+                                <Image src={picture} className='border-black border-2' alt='failed to generate image' width={300} height={300} />
                             </div>
-                        )) : (
-                            ""
                         )}
                     </div>
                 </div>
